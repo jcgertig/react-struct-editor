@@ -22964,7 +22964,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _react2["default"].createElement(
 	      'div',
 	      {
-	        styles: (0, _lodash.assign)({}, styles.PanelWrapper, isOpen ? {} : styles.ClosedPanelWrapper, isOver ? styles.Over : {}),
+	        style: (0, _lodash.assign)({}, styles.PanelWrapper, isOpen ? {} : styles.ClosedPanelWrapper, isOver ? styles.Over : {}),
 	        onDragStart: this.handleDragStart,
 	        onDragEnter: this.handleDragEnter,
 	        onDragOver: this.handleDragOver,

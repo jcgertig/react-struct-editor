@@ -136,7 +136,7 @@ class Panel extends Component {
     const { isOver } = this.state
     return (
       <div
-        styles={assign({}, styles.PanelWrapper, isOpen ? {} : styles.ClosedPanelWrapper, isOver ? styles.Over : {})}
+        style={assign({}, styles.PanelWrapper, isOpen ? {} : styles.ClosedPanelWrapper, isOver ? styles.Over : {})}
         onDragStart={this.handleDragStart}
         onDragEnter={this.handleDragEnter}
         onDragOver={this.handleDragOver}
