@@ -19018,7 +19018,9 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var name = _ref;
 
-	    if ((0, _lodash.has)(scope, name)) {
+	    if ((0, _lodash.isUndefined)(scope[name])) {
+	      console.error('Missing ', name);
+	    } else {
 	      scope[name] = scope[name].bind(scope);
 	    }
 	  }

@@ -1,8 +1,10 @@
-import { has } from 'lodash'
+import { isUndefined } from 'lodash'
 
 export default function autoBind(scope, names = []) {
   for (const name of names) {
-    if (has(scope, name)) {
+    if (isUndefined(scope[name])) {
+      console.error('Missing ', name)
+    } else {
       scope[name] = scope[name].bind(scope)
     }
   }
