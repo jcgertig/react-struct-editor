@@ -29,7 +29,7 @@ const styles = {
     textOverflow: 'ellipsis',
     paddingRight: '8px',
     cursor: 'pointer',
-    '-webkit-user-select': 'none',
+    WebkitUserSelect: 'none',
     userSelect: 'none'
   },
 
