@@ -25443,6 +25443,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var data = (0, _lodash.cloneDeep)(this.state.struct[key]);
 	    var s = struct;
+	    console.log(s, key, (0, _lodash.has)(s, key));
 	    if ((0, _lodash.has)(s, key) && (0, _lodash.has)(s[key], 'type') && (s[key].type === 'KeyValue' || s[key].type === 'Object')) {
 	      data[''] = undefined;
 	    } else if ((0, _lodash.has)(s, key) && (0, _lodash.has)(s[key], 'type') && s[key].type === 'Array') {

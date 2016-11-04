@@ -92,6 +92,7 @@ class Struct extends Component {
     const { struct } = this.props
     const data = cloneDeep(this.state.struct[key])
     const s = struct
+    console.log(s, key, has(s, key))
     if (has(s, key) && has(s[key], 'type') && (s[key].type === 'KeyValue' || s[key].type === 'Object')) {
       data[''] = undefined
     } else if (has(s, key) && has(s[key], 'type') && s[key].type === 'Array') {
