@@ -91,8 +91,8 @@ class Struct extends Component {
   addToCollection(key) {
     const { struct } = this.props
     const data = cloneDeep(this.state.struct[key])
-    const s = struct
-    console.log(s, key, has(s, key))
+    let s = struct
+    console.log(s, key, has(s, key), data)
     if (has(s, key) && has(s[key], 'type') && (s[key].type === 'KeyValue' || s[key].type === 'Object')) {
       data[''] = undefined
     } else if (has(s, key) && has(s[key], 'type') && s[key].type === 'Array') {
@@ -100,7 +100,16 @@ class Struct extends Component {
     } else if (has(s, key) && has(s[key], 'type')) {
       data.push(defaultFromStruct(s[key].struct))
     } else {
-      data.push(defaultFromStruct(s.struct[key].struct))
+      let s = s.struct
+      if (has(s, key) && has(s[key], 'type') && (s[key].type === 'KeyValue' || s[key].type === 'Object')) {
+        data[''] = undefined
+      } else if (has(s, key) && has(s[key], 'type') && s[key].type === 'Array') {
+        data.push(s[key].struct.default)
+      } else if (has(s, key) && has(s[key], 'type')) {
+        data.push(defaultFromStruct(s[key].struct))
+      } else {
+        data.push(defaultFromStruct(s[key].struct))
+      }
     }
     this.props.updateData(Object.assign({}, this.state.struct, { [key]: data }), this.props.index)
   }
