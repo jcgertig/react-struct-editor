@@ -100,7 +100,7 @@ class Struct extends Component {
     } else if (has(s, key) && has(s[key], 'type')) {
       data.push(defaultFromStruct(s[key].struct))
     } else {
-      let s = s.struct
+      s = s.struct
       if (has(s, key) && has(s[key], 'type') && (s[key].type === 'KeyValue' || s[key].type === 'Object')) {
         data[''] = undefined
       } else if (has(s, key) && has(s[key], 'type') && s[key].type === 'Array') {
