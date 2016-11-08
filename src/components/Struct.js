@@ -92,7 +92,6 @@ class Struct extends Component {
     const { struct } = this.props
     const data = cloneDeep(this.state.struct[key])
     let s = struct
-    console.log(s, key, has(s, key), data)
     if (has(s, key) && has(s[key], 'type') && (s[key].type === 'KeyValue' || s[key].type === 'Object')) {
       data[''] = undefined
     } else if (has(s, key) && has(s[key], 'type') && s[key].type === 'Array') {
@@ -126,7 +125,9 @@ class Struct extends Component {
     removeFromCollection(attr, index)
   }
 
-  renderNonCollections({ struct }) {
+  renderNonCollections({ struct, hideAfter }) {
+    let beforeHide = -1
+    if (!isUndefined(hideAfter)) { beforeHide = hideAfter }
     if (!isUndefined(struct)) {
       let keys = Object.keys(struct)
       const isNonCollection = (key) => {
@@ -134,6 +135,47 @@ class Struct extends Component {
         return struct[key].type.indexOf('Collection') < 0 && notCollection(key)
       }
       keys = keys.filter(isNonCollection)
+
+      const rendered = []
+      if (beforeHide !== -1) {
+        keys.slice(0, beforeHide + 1).map((key, i) => {
+          rendered.push((
+            <div key={i} style={{ marginTop: '25px' }}>
+              <label>{struct[key].label}</label><br />
+              <Input
+                name={key}
+                struct={struct[key]}
+                value={this.state.struct[key]}
+                onChange={this.updateStateKey}
+                optionTypes={this.props.optionTypes}
+              />
+            </div>
+          ))
+        })
+        const insidePanel = []
+        keys.slice(beforeHide + 1).map((key, i) => {
+          insidePanel.push((
+            <div key={i} style={{ marginTop: '25px' }}>
+              <label>{struct[key].label}</label><br />
+              <Input
+                name={key}
+                struct={struct[key]}
+                value={this.state.struct[key]}
+                onChange={this.updateStateKey}
+                optionTypes={this.props.optionTypes}
+              />
+            </div>
+          ))
+        })
+        rendered.push((
+          <Accordion key={beforeHide + 1}>
+            <Panel header="Other">
+              {insidePanel}
+            </Panel>
+          </Accordion>
+        ))
+        return rendered
+      }
       return keys.map((key, i) => (
         <div key={i} style={{ marginTop: '25px' }}>
           <label>{struct[key].label}</label><br />
