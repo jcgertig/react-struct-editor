@@ -56,10 +56,7 @@ class Struct extends Component {
     const data = cloneDeep(this.state.struct[key])
     const current = cloneDeep(data[index])
 
-    let { struct } = this.props.struct
-    if (isUndefined(struct)) {
-      struct = this.props.struct
-    }
+    const { struct } = this.props.struct
     const idAttr = findKey(struct[key].struct, { type: 'Id' })
     if (!isUndefined(idAttr) && current[idAttr] !== val[idAttr]) {
       if (!isUndefined(find(data, { [idAttr]: val[idAttr] }))) {
