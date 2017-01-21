@@ -1,4 +1,6 @@
 import React, { Component, PropTypes } from 'react'
+import { cloneDeep } from 'lodash'
+
 import autoBind from '../utils/autoBind'
 import getTypeProps from '../utils/getTypeProps'
 
@@ -32,7 +34,7 @@ class ObjectEditor extends Component {
 
   render() {
     const { struct: { objectStruct } } = this.props
-    const { value } = this.state
+    const value = cloneDeep(this.state)
 
     Object.keys(objectStruct).map((key, index) => (
       <Struct
