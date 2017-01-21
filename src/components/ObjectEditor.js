@@ -36,15 +36,19 @@ class ObjectEditor extends Component {
     const { struct: { objectStruct } } = this.props
     const value = cloneDeep(this.state)
 
-    Object.keys(objectStruct).map((key, index) => (
-      <Struct
-        key={index}
-        value={value[key]}
-        struct={objectStruct[key]}
-        onChange={this.createChangeHandler(key)}
-        {...getTypeProps(this.props)}
-      />
-    ))
+    return (
+      <div>
+        {Object.keys(objectStruct).map((key, index) => (
+          <Struct
+            key={index}
+            value={value[key]}
+            struct={objectStruct[key]}
+            onChange={this.createChangeHandler(key)}
+            {...getTypeProps(this.props)}
+          />
+        ))}
+      </div>
+    )
   }
 }
 
