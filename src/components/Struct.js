@@ -1,365 +1,112 @@
 import React, { Component, PropTypes } from 'react'
-import {
-  cloneDeep, isUndefined, pullAt, findKey, find, has, isString, isFunction
-} from 'lodash'
-import pluralize from 'pluralize'
-import defaultFromStruct from '../utils/defaultFromStruct'
+import { isPlainObject, isArray, uniq, endsWith, capitalize } from 'lodash'
+
 import autoBind from '../utils/autoBind'
-import warning from '../utils/warning'
+import getTypeProps from '../utils/getTypeProps'
+import { BASIC_TYPES } from '../utils/types'
 
-import Accordion from './Accordion'
-import Panel from './Panel'
-import Input from './Input'
-import ObjectEditor from './ObjectEditor'
-
-const CollectionTypes = [ 'KeyValue', 'Object', 'Collection', 'Array' ]
+const joinTypes = (props) => {
+  const joint = {}
+  const types = getTypeProps(props)
+  Object.keys(types).forEach(key => {
+    const type = capitalize(key.replace('Types', ''))
+    Object.keys(types[key]).forEach(innerKey => {
+      let setKey = `${innerKey}${type}`
+      if (innerKey === '≤Default≥') { setKey = type }
+      joint[setKey] = types[key][type === 'option' ? '≤Default≥' : innerKey]
+    })
+  })
+  return joint
+}
 
 class Struct extends Component {
 
   constructor() {
     super()
 
-    this.state = {
-      struct: {}
-    }
+    this.state = { value: null }
 
-    autoBind(this, [
-      'updateStateKey', 'updateStateIndex', 'updateCollection', 'updateCollectionOrder',
-      'updateState', 'addToCollection', 'removeFromCollection', 'handleRemoveClick',
-      'renderNonCollections', 'renderCollection', 'renderCollections'
-    ])
+    autoBind(this, [])
   }
 
   componentWillMount() {
-    const { struct, data } = this.props
-    this.setState({ struct: Object.assign({}, defaultFromStruct(struct.struct), data) })
+    this.setState({ value: this.props.value })
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ struct: Object.assign({}, this.state.struct, nextProps.data) })
+    this.setState({ value: nextProps.value })
   }
 
-  updateStateKey(key, val) {
-    this.setState({ struct: Object.assign({}, this.state.struct, { [key]: val }) })
-  }
+  getType() {
+    const { struct: { type, collectionStruct }, collectionTypes } = this.props
+    const { value } = this.state
 
-  updateStateIndex(key, index, val) {
-    const { struct } = this.state
-    const data = cloneDeep(struct[key])
-    data[index] = val
-    struct[key] = data
-    this.setState({ struct })
-  }
+    const checkStruct = (structType, structDef, attr, types) => {
+      const name = structType.replace(attr, '') || '≤Default≥'
+      return types[name].checkStruct(value, structDef[name])
+    }
 
-  updateCollection(key, val, index) {
-    let needsUpdate = false
-    const data = cloneDeep(this.state.struct[key])
-    const current = cloneDeep(data[index])
-
-    const { struct } = this.props.struct
-    const idAttr = findKey(struct[key].struct, { type: 'Id' })
-    if (!isUndefined(idAttr) && current[idAttr] !== val[idAttr]) {
-      if (!isUndefined(find(data, { [idAttr]: val[idAttr] }))) {
-        alert(`Id types must be unique. (${idAttr})`); // eslint-disable-line
-        return
+    const getFromSet = (attr) => {
+      const types = type.filter((t) => endsWith(t, attr))
+      if (types.length > 0) {
+        if (types.length === 1) { return types[0] }
+        for (const colType of types) {
+          if (checkStruct(colType, collectionStruct, attr, collectionTypes)) {
+            return colType
+          }
+        }
       }
-      needsUpdate = true
+      return null
     }
 
-    data[index] = val
-    this.props.updateData(Object.assign({}, this.state.struct, { [key]: data }), this.props.index)
-    if (needsUpdate) {
-      this.props.updateRef({ currentId: current[idAttr], newId: val[idAttr] })
-    }
-  }
-
-  updateCollectionOrder(key, newOrder) {
-    const collection = cloneDeep(this.state.struct[key])
-
-    const data = []
-    for (const order of newOrder) {
-      data.push(collection[parseInt(order, 10)])
-    }
-
-    this.props.updateData(Object.assign({}, this.state.struct, { [key]: data }), this.props.index)
-  }
-
-  updateState() {
-    this.props.updateData(this.state.struct, this.props.index)
-  }
-
-  addToCollection(key) {
-    const { struct } = this.props
-    const data = cloneDeep(this.state.struct[key])
-    let s = struct
-    if (has(s, key) && has(s[key], 'type') && (s[key].type === 'KeyValue' || s[key].type === 'Object')) {
-      data[''] = undefined
-    } else if (has(s, key) && has(s[key], 'type') && s[key].type === 'Array') {
-      data.push(s[key].struct.default)
-    } else if (has(s, key) && has(s[key], 'type')) {
-      data.push(defaultFromStruct(s[key].struct))
-    } else {
-      s = s.struct
-      if (has(s, key) && has(s[key], 'type') && (s[key].type === 'KeyValue' || s[key].type === 'Object')) {
-        data[''] = undefined
-      } else if (has(s, key) && has(s[key], 'type') && s[key].type === 'Array') {
-        data.push(s[key].struct.default)
-      } else if (has(s, key) && has(s[key], 'type')) {
-        data.push(defaultFromStruct(s[key].struct))
+    if (isArray(type)) {
+      if (isArray(value)) {
+        if (value.length > 1) {
+          const types = uniq(value.map(val => typeof(val)))
+          if (types.length === 1 && isPlainObject(value[0])) {
+            const gotType = getFromSet('Collection')
+            if (gotType !== null) { return gotType }
+          }
+        }
+        return getFromSet('Array') || ''
+      } else if (isPlainObject(value)) {
+        const gotType = getFromSet('Object')
+        if (gotType === 'Object' || gotType === null) {
+          const gotTypeTwo = getFromSet('KeyValue')
+          if (gotTypeTwo === null && gotType !== null) { return gotType }
+          if (gotTypeTwo !== null) { return gotTypeTwo }
+        }
+        if (gotType !== null) { return gotType }
       } else {
-        data.push(defaultFromStruct(s[key].struct))
+        for (const basicType of BASIC_TYPES) {
+          const gotType = getFromSet(basicType)
+          if (gotType !== null) { return gotType }
+        }
       }
+      return ''
     }
-    this.props.updateData(Object.assign({}, this.state.struct, { [key]: data }), this.props.index)
-  }
-
-  removeFromCollection(key, index) {
-    const { struct } = this.state
-    const data = cloneDeep(struct[key])
-    pullAt(data, [ index ])
-    this.props.updateData(Object.assign({}, this.state.struct, { [key]: data }), this.props.index)
-  }
-
-  handleRemoveClick() {
-    const { removeFromCollection, attr, index } = this.props
-    removeFromCollection(attr, index)
-  }
-
-  renderNonCollections({ struct, hideAfter }) {
-    let beforeHide = -1
-    if (!isUndefined(hideAfter)) { beforeHide = hideAfter }
-    if (!isUndefined(struct)) {
-      let keys = Object.keys(struct)
-      const isNonCollection = (key) => {
-        const notCollection = (k) => (CollectionTypes.indexOf(struct[k].type) < 0)
-        return struct[key].type.indexOf('Collection') < 0 && notCollection(key)
-      }
-      keys = keys.filter(isNonCollection)
-
-      const rendered = []
-      if (beforeHide !== -1) {
-        keys.slice(0, beforeHide + 1).map((key, i) => {
-          rendered.push((
-            <div key={i} style={{ marginTop: '25px' }}>
-              <label>{struct[key].label}</label><br />
-              <Input
-                name={key}
-                struct={struct[key]}
-                value={this.state.struct[key]}
-                onChange={this.updateStateKey}
-                optionTypes={this.props.optionTypes}
-              />
-            </div>
-          ))
-        })
-        const insidePanel = []
-        keys.slice(beforeHide + 1).map((key, i) => {
-          insidePanel.push((
-            <div key={i} style={{ marginTop: '25px' }}>
-              <label>{struct[key].label}</label><br />
-              <Input
-                name={key}
-                struct={struct[key]}
-                value={this.state.struct[key]}
-                onChange={this.updateStateKey}
-                optionTypes={this.props.optionTypes}
-              />
-            </div>
-          ))
-        })
-        rendered.push((
-          <Accordion key={beforeHide + 1}>
-            <Panel header="Other">
-              {insidePanel}
-            </Panel>
-          </Accordion>
-        ))
-        return rendered
-      }
-      return keys.map((key, i) => (
-        <div key={i} style={{ marginTop: '25px' }}>
-          <label>{struct[key].label}</label><br />
-          <Input
-            name={key}
-            struct={struct[key]}
-            value={this.state.struct[key]}
-            onChange={this.updateStateKey}
-            optionTypes={this.props.optionTypes}
-          />
-        </div>
-      ))
-    }
-  }
-
-  renderCollection(struct, key) {
-    const { updateRef, optionTypes, collectionTypes } = this.props
-    if (struct.type === 'Collection') {
-      return this.state.struct[key].map((value, i) => (
-        <Struct
-          key={i}
-          attr={key}
-          data={value}
-          struct={struct}
-          updateRef={updateRef}
-          optionTypes={optionTypes}
-          collectionTypes={collectionTypes}
-          removeFromCollection={this.removeFromCollection}
-          updateData={this.updateCollection.bind(this, key)}
-        />
-      ))
-    } else if (struct.type.indexOf('Collection') > -1) {
-      const Comp = collectionTypes[struct.type.replace('Collection', '')]
-      if (!isUndefined(Comp)) {
-        return this.state.struct[key].map((value, i) => (
-          <Comp
-            key={i}
-            attr={key}
-            data={value}
-            struct={struct}
-            optionTypes={optionTypes}
-            collectionTypes={collectionTypes}
-            removeFromCollection={this.removeFromCollection}
-            updateData={this.updateCollection.bind(this, key)}
-          />
-        ))
-      }
-    } else if (struct.type === 'KeyValue' || struct.type === 'Object') {
-      return (
-        <ObjectEditor
-          name={key}
-          struct={struct}
-          optionTypes={optionTypes}
-          value={this.state.struct[key]}
-          onChange={this.updateStateKey}
-          collectionTypes={collectionTypes}
-          updateCollectionOrder={this.updateCollectionOrder}
-        />
-      )
-    } else if (struct.type === 'Array') {
-      return this.state.struct[key].map((val, i) => (
-        <Panel
-          key={i}
-          header={`${i + 1} - ${val}`}
-        >
-          <div style={{ marginBottom: 15, marginTop: 25 }}>
-            <label>{struct.struct.label}</label><br />
-            <Input
-              name={i}
-              value={val}
-              struct={struct.struct}
-              onChange={this.updateStateIndex.bind(this, key)}
-              optionTypes={this.props.optionTypes}
-            />
-          </div>
-          <button onClick={this.removeFromCollection.bind(this, key, i)}>
-            Remove {pluralize(struct.struct.label, 1)}
-          </button>
-        </Panel>
-      ))
-    }
-  }
-
-  renderCollections({ struct }) {
-    if (!isUndefined(struct)) {
-      const isObject = (key) => (CollectionTypes.indexOf(struct[key].type) > -1)
-      let keys = Object.keys(struct)
-      const isCollection = (key) => (
-        struct[key].type.indexOf('Collection') > -1 || isObject(key)
-      )
-      keys = keys.filter(isCollection)
-      if (keys.length > 0) {
-        return (
-          <Accordion>
-            {
-              keys.map((key, i) => {
-                const data = this.state.struct[key]
-                let len = '-1'
-                if (data) {
-                  len = isObject(key) ? Object.keys(data).length : data.length
-                }
-                return (
-                  <Panel
-                    key={i}
-                    header={`${struct[key].label} (${len})`}
-                  >
-                    <Accordion
-                      orderable={has(struct[key], 'orderable') ? struct[key].orderable : true}
-                      reorder={this.updateCollectionOrder.bind(this, key)}
-                    >
-                      {this.renderCollection(struct[key], key)}
-                    </Accordion>
-                    {
-                      struct[key].type !== 'Object' &&
-                      (
-                        <button onClick={this.addToCollection.bind(this, key)}>
-                          Add a {pluralize(struct[key].label, 1)}
-                        </button>
-                      )
-                    }
-                  </Panel>
-                )
-              })
-            }
-          </Accordion>
-        )
-      }
-    }
+    return type
   }
 
   render() {
-    const { struct } = this.props
-    let header = 'No header attr update struct.'
-    if (has(struct, 'header')) {
-      if (isString(struct.header) && has(this.state.struct, struct.header)) {
-        header = this.state.struct[struct.header]
-      } else if (isFunction(struct.header)) {
-        header = struct.header(this.state.struct, parseInt(this.props.index, 10))
-      }
-    }
-    if (isUndefined(struct.label)) {
-      warning('undefined label?', struct)
-    }
-    if (struct.type === 'Object') {
-      return (
-        <div>
-          {this.renderNonCollections(struct || {})}
-          {this.renderCollections(struct || {})}
-          <br />
-          <button onClick={this.updateState}>
-            Update {pluralize(struct.label, 1)}
-          </button>
-        </div>
-      )
-    }
-    return (
-      <Panel header={header} {...this.props}>
-        {this.renderNonCollections(struct || {})}
-        {this.renderCollections(struct || {})}
-        <br />
-        <button onClick={this.updateState}>
-          Update {pluralize(struct.label, 1)}
-        </button>
-        <button onClick={this.handleRemoveClick}>
-          Remove {pluralize(struct.label, 1)}
-        </button>
-      </Panel>
-    )
+    const type = this.getType()
+    const Comp = joinTypes(this.props)[type] // eslint-disable-line no-unused-vars
+    return <Comp type={type} {...this.props} />
   }
 }
 
 Struct.propTypes = {
-  data: PropTypes.any,
-  attr: PropTypes.any,
-  struct: PropTypes.any,
-  updateRef: PropTypes.func,
-  updateData: PropTypes.func,
-  optionTypes: PropTypes.object,
-  collectionTypes: PropTypes.object,
-  removeFromCollection: PropTypes.func,
-
-  index: PropTypes.any,
-  isOpen: PropTypes.any,
-  openPanel: PropTypes.func
+  value: PropTypes.any.isRequired,
+  struct: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  textTypes: PropTypes.object.isRequired,
+  arrayTypes: PropTypes.object.isRequired,
+  numberTypes: PropTypes.object.isRequired,
+  optionTypes: PropTypes.object.isRequired,
+  objectTypes: PropTypes.object.isRequired,
+  booleanTypes: PropTypes.object.isRequired,
+  keyValueTypes: PropTypes.object.isRequired,
+  collectionTypes: PropTypes.object.isRequired
 }
 
 export default Struct
