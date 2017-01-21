@@ -25234,14 +25234,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    var value = (0, _lodash.cloneDeep)(this.state);
 
-	    Object.keys(objectStruct).map(function (key, index) {
-	      return _react2["default"].createElement(_Struct2["default"], _extends({
-	        key: index,
-	        value: value[key],
-	        struct: objectStruct[key],
-	        onChange: _this3.createChangeHandler(key)
-	      }, (0, _getTypeProps2["default"])(_this3.props)));
-	    });
+	    return _react2["default"].createElement(
+	      'div',
+	      null,
+	      Object.keys(objectStruct).map(function (key, index) {
+	        return _react2["default"].createElement(_Struct2["default"], _extends({
+	          key: index,
+	          value: value[key],
+	          struct: objectStruct[key],
+	          onChange: _this3.createChangeHandler(key)
+	        }, (0, _getTypeProps2["default"])(_this3.props)));
+	      })
+	    );
 	  };
 
 	  return ObjectEditor;
