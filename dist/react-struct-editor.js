@@ -18585,7 +18585,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	};
 
 	BasicType.propTypes = {
-	  value: _react.PropTypes.any.isRequired,
+	  value: _react.PropTypes.any,
 	  type: _react.PropTypes.string.isRequired,
 	  struct: _react.PropTypes.object.isRequired,
 	  onChange: _react.PropTypes.func.isRequired,
@@ -19843,20 +19843,18 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	  Struct.prototype.getType = function getType() {
 	    var _props = this.props,
-	        _props$struct = _props.struct,
-	        type = _props$struct.type,
-	        collectionStruct = _props$struct.collectionStruct,
+	        struct = _props.struct,
 	        collectionTypes = _props.collectionTypes;
 	    var value = this.state.value;
 
 
 	    var checkStruct = function checkStruct(structType, structDef, attr, types) {
 	      var name = structType.replace(attr, '') || '≤Default≥';
-	      return types[name].checkStruct(value, structDef[name]);
+	      return types[name].checkStruct(value, name, structDef);
 	    };
 
 	    var getFromSet = function getFromSet(attr) {
-	      var types = type.filter(function (t) {
+	      var types = struct.type.filter(function (t) {
 	        return (0, _lodash.endsWith)(t, attr);
 	      });
 	      if (types.length > 0) {
@@ -19877,7 +19875,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	          var colType = _ref;
 
-	          if (checkStruct(colType, collectionStruct, attr, collectionTypes)) {
+	          if (checkStruct(colType, struct[(0, _lodash.camelCase)(attr + 'Struct')], attr, collectionTypes)) {
 	            return colType;
 	          }
 	        }
@@ -19885,7 +19883,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return null;
 	    };
 
-	    if ((0, _lodash.isArray)(type)) {
+	    if ((0, _lodash.isArray)(struct.type)) {
 	      if ((0, _lodash.isArray)(value)) {
 	        if (value.length > 1) {
 	          var types = (0, _lodash.uniq)(value.map(function (val) {
@@ -19936,7 +19934,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	      }
 	      return '';
 	    }
-	    return type;
+	    return struct.type;
 	  };
 
 	  Struct.prototype.render = function render() {
@@ -19949,7 +19947,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_react.Component);
 
 	Struct.propTypes = {
-	  value: _react.PropTypes.any.isRequired,
+	  value: _react.PropTypes.any,
 	  struct: _react.PropTypes.object.isRequired,
 	  onChange: _react.PropTypes.func.isRequired,
 	  textTypes: _react.PropTypes.object.isRequired,
@@ -25252,7 +25250,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	}(_react.Component);
 
 	ObjectEditor.propTypes = {
-	  value: _react.PropTypes.object.isRequired,
+	  value: _react.PropTypes.object,
 	  struct: _react.PropTypes.object.isRequired,
 	  onChange: _react.PropTypes.func.isRequired,
 	  textTypes: _react.PropTypes.object.isRequired,
