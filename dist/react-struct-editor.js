@@ -28251,6 +28251,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	        props = _objectWithoutProperties(_props$struct, ['header']);
 
 	    var struct = this.getStruct();
+	    console.log('props for clollection', header, props, struct);
 	    if (typeof this.state.value === 'undefined') {
 	      return [];
 	    }

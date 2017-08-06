@@ -48,6 +48,7 @@ class CollectionType extends BasicType {
   renderIndexs() {
     let { struct: { header, ...props } } = this.props
     const struct = this.getStruct()
+    console.log('props for clollection', header, props, struct)
     if (typeof this.state.value === 'undefined') {
       return []
     }
