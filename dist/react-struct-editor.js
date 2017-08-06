@@ -28039,6 +28039,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _react2["default"].createElement(
 	          'div',
 	          { style: { marginTop: '25px' } },
+	          _react2["default"].createElement(
+	            'label',
+	            null,
+	            struct.label
+	          ),
+	          _react2["default"].createElement('br', null),
 	          _react2["default"].createElement(_Struct2["default"], _extends({
 	            key: index,
 	            value: val,
