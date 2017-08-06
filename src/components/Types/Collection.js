@@ -48,7 +48,9 @@ class CollectionType extends BasicType {
   renderIndexs() {
     let { struct: { header, ...props } } = this.props
     const struct = this.getStruct()
-
+    if (typeof this.state.value === 'undefined') {
+      return []
+    }
     return this.state.value.map((val, index) => {
       if (!isUndefined(header)) {
         if (isString(header) && has(val, header)) {

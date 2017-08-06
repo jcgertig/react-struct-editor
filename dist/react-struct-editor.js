@@ -28251,7 +28251,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	        props = _objectWithoutProperties(_props$struct, ['header']);
 
 	    var struct = this.getStruct();
-
+	    if (typeof this.state.value === 'undefined') {
+	      return [];
+	    }
 	    return this.state.value.map(function (val, index) {
 	      if (!(0, _lodash.isUndefined)(header)) {
 	        if ((0, _lodash.isString)(header) && (0, _lodash.has)(val, header)) {
