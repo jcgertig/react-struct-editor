@@ -38,7 +38,7 @@ BasicType.checkStruct = function (value, struct) {
 }
 
 BasicType.propTypes = {
-  value: PropTypes.any.isRequired,
+  value: PropTypes.any,
   type: PropTypes.string.isRequired,
   struct: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,

@@ -53,7 +53,7 @@ class ObjectEditor extends Component {
 }
 
 ObjectEditor.propTypes = {
-  value: PropTypes.object.isRequired,
+  value: PropTypes.object,
   struct: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   textTypes: PropTypes.object.isRequired,

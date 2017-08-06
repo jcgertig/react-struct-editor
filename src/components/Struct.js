@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import { isPlainObject, isArray, uniq, endsWith, capitalize } from 'lodash'
+import { isPlainObject, isArray, uniq, endsWith, capitalize, camelCase } from 'lodash'
 
 import autoBind from '../utils/autoBind'
 import getTypeProps from '../utils/getTypeProps'
@@ -38,20 +38,20 @@ class Struct extends Component {
   }
 
   getType() {
-    const { struct: { type, collectionStruct }, collectionTypes } = this.props
+    const { struct, collectionTypes } = this.props
     const { value } = this.state
 
     const checkStruct = (structType, structDef, attr, types) => {
       const name = structType.replace(attr, '') || '≤Default≥'
-      return types[name].checkStruct(value, structDef[name])
+      return types[name].checkStruct(value, name, structDef)
     }
 
     const getFromSet = (attr) => {
-      const types = type.filter((t) => endsWith(t, attr))
+      const types = struct.type.filter((t) => endsWith(t, attr))
       if (types.length > 0) {
         if (types.length === 1) { return types[0] }
         for (const colType of types) {
-          if (checkStruct(colType, collectionStruct, attr, collectionTypes)) {
+          if (checkStruct(colType, struct[camelCase(`${attr}Struct`)], attr, collectionTypes)) {
             return colType
           }
         }
@@ -59,7 +59,7 @@ class Struct extends Component {
       return null
     }
 
-    if (isArray(type)) {
+    if (isArray(struct.type)) {
       if (isArray(value)) {
         if (value.length > 1) {
           const types = uniq(value.map(val => typeof(val)))
@@ -85,7 +85,7 @@ class Struct extends Component {
       }
       return ''
     }
-    return type
+    return struct.type
   }
 
   render() {
@@ -96,7 +96,7 @@ class Struct extends Component {
 }
 
 Struct.propTypes = {
-  value: PropTypes.any.isRequired,
+  value: PropTypes.any,
   struct: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   textTypes: PropTypes.object.isRequired,
