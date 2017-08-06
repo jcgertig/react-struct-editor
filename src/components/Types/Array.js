@@ -61,7 +61,6 @@ class ArrayType extends BasicType {
       return (
         <Panel key={index} header={header} {...props}>
           <div style={{ marginTop: '25px' }}>
-            <label>{struct.label}</label><br />
             <Struct
               key={index}
               value={val}

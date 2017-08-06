@@ -28039,12 +28039,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _react2["default"].createElement(
 	          'div',
 	          { style: { marginTop: '25px' } },
-	          _react2["default"].createElement(
-	            'label',
-	            null,
-	            struct.label
-	          ),
-	          _react2["default"].createElement('br', null),
 	          _react2["default"].createElement(_Struct2["default"], _extends({
 	            key: index,
 	            value: val,
@@ -28121,12 +28115,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  BooleanType.prototype.render = function render() {
-	    return _react2["default"].createElement('input', {
-	      type: 'checkbox',
-	      onChange: this.updateValue,
-	      style: { width: '100%', boxSizing: 'border-box' },
-	      checked: (0, _lodash.isUndefined)(this.state.value) ? false : this.state.value
-	    });
+	    return _react2["default"].createElement(
+	      'div',
+	      null,
+	      _react2["default"].createElement(
+	        'label',
+	        null,
+	        this.props.struct.label
+	      ),
+	      _react2["default"].createElement('br', null),
+	      _react2["default"].createElement('input', {
+	        type: 'checkbox',
+	        onChange: this.updateValue,
+	        style: { width: '100%', boxSizing: 'border-box' },
+	        checked: (0, _lodash.isUndefined)(this.state.value) ? false : this.state.value
+	      })
+	    );
 	  };
 
 	  return BooleanType;
@@ -28251,7 +28255,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        props = _objectWithoutProperties(_props$struct, ['header']);
 
 	    var struct = this.getStruct();
-	    console.log('props for clollection', header, props, struct);
 	    if (typeof this.state.value === 'undefined') {
 	      return [];
 	    }
@@ -28273,12 +28276,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	          return _react2["default"].createElement(
 	            'div',
 	            { key: index + '-' + key, style: { marginTop: '25px' } },
-	            _react2["default"].createElement(
-	              'label',
-	              null,
-	              struct[key].label
-	            ),
-	            _react2["default"].createElement('br', null),
 	            _react2["default"].createElement(_Struct2["default"], _extends({
 	              value: val[key],
 	              struct: struct[key],
@@ -28474,12 +28471,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	    return _react2["default"].createElement(
 	      'div',
 	      { key: index, style: { marginTop: '25px' } },
-	      _react2["default"].createElement(
-	        'label',
-	        null,
-	        struct.label
-	      ),
-	      _react2["default"].createElement('br', null),
 	      _react2["default"].createElement(_Struct2["default"], _extends({
 	        key: index,
 	        struct: struct,
@@ -28587,14 +28578,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  NumberType.prototype.render = function render() {
 	    return _react2["default"].createElement(
 	      'div',
-	      { className: 'Select' },
-	      _react2["default"].createElement('input', {
-	        type: 'number',
-	        autoComplete: 'off',
-	        value: this.state.value,
-	        onChange: this.updateValue,
-	        className: 'Select-control Input'
-	      })
+	      null,
+	      _react2["default"].createElement(
+	        'label',
+	        null,
+	        this.props.struct.label
+	      ),
+	      _react2["default"].createElement('br', null),
+	      _react2["default"].createElement(
+	        'div',
+	        { className: 'Select' },
+	        _react2["default"].createElement('input', {
+	          type: 'number',
+	          autoComplete: 'off',
+	          value: this.state.value,
+	          onChange: this.updateValue,
+	          className: 'Select-control Input'
+	        })
+	      )
 	    );
 	  };
 
@@ -28709,13 +28710,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  OptionType.prototype.render = function render() {
 	    var _props = this.props,
 	        type = _props.type,
+	        struct = _props.struct,
 	        optionTypes = _props.optionTypes;
 
-	    return _react2["default"].createElement(_Select2["default"], {
-	      value: this.state.value,
-	      onChange: this.updateValue,
-	      options: optionTypes[type.replace('Option', '')]
-	    });
+	    return _react2["default"].createElement(
+	      'div',
+	      null,
+	      _react2["default"].createElement(
+	        'label',
+	        null,
+	        struct.label
+	      ),
+	      _react2["default"].createElement('br', null),
+	      _react2["default"].createElement(_Select2["default"], {
+	        value: this.state.value,
+	        onChange: this.updateValue,
+	        options: optionTypes[type.replace('Option', '')]
+	      })
+	    );
 	  };
 
 	  return OptionType;
@@ -28768,14 +28780,24 @@ return /******/ (function(modules) { // webpackBootstrap
 	  TextType.prototype.render = function render() {
 	    return _react2["default"].createElement(
 	      'div',
-	      { className: 'Select' },
-	      _react2["default"].createElement('input', {
-	        type: 'text',
-	        autoComplete: 'off',
-	        value: this.state.value,
-	        onChange: this.updateValue,
-	        className: 'Select-control Input'
-	      })
+	      null,
+	      _react2["default"].createElement(
+	        'label',
+	        null,
+	        this.props.struct.label
+	      ),
+	      _react2["default"].createElement('br', null),
+	      _react2["default"].createElement(
+	        'div',
+	        { className: 'Select' },
+	        _react2["default"].createElement('input', {
+	          type: 'text',
+	          autoComplete: 'off',
+	          value: this.state.value,
+	          onChange: this.updateValue,
+	          className: 'Select-control Input'
+	        })
+	      )
 	    );
 	  };
 

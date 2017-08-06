@@ -78,7 +78,6 @@ class KeyValueType extends BasicType {
     const struct = this.getStruct()
     return (
       <div key={index} style={{ marginTop: '25px' }}>
-        <label>{struct.label}</label><br />
         <Struct
           key={index}
           struct={struct}

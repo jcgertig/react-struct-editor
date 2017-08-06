@@ -48,7 +48,6 @@ class CollectionType extends BasicType {
   renderIndexs() {
     let { struct: { header, ...props } } = this.props
     const struct = this.getStruct()
-    console.log('props for clollection', header, props, struct)
     if (typeof this.state.value === 'undefined') {
       return []
     }
@@ -67,7 +66,6 @@ class CollectionType extends BasicType {
         <Panel key={index} header={header} {...props}>
           {Object.keys(struct).map(key => (
             <div key={`${index}-${key}`} style={{ marginTop: '25px' }}>
-              <label>{struct[key].label}</label><br />
               <Struct
                 value={val[key]}
                 struct={struct[key]}

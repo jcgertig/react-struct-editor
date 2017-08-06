@@ -16,12 +16,15 @@ class BooleanType extends BasicType {
 
   render() {
     return (
-      <input
-        type="checkbox"
-        onChange={this.updateValue}
-        style={{ width: '100%', boxSizing: 'border-box' }}
-        checked={isUndefined(this.state.value) ? false : this.state.value}
-      />
+      <div>
+        <label>{this.props.struct.label}</label><br />
+        <input
+          type="checkbox"
+          onChange={this.updateValue}
+          style={{ width: '100%', boxSizing: 'border-box' }}
+          checked={isUndefined(this.state.value) ? false : this.state.value}
+        />
+      </div>
     )
   }
 }
