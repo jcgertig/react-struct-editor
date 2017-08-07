@@ -28410,19 +28410,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var struct = this.getStruct();
 
 	    return this.state.value.map(function (val, index) {
+	      var headerText = '';
 	      if (!(0, _lodash.isUndefined)(header)) {
 	        if ((0, _lodash.isString)(header) && (0, _lodash.has)(val, header)) {
-	          header = val[header];
+	          headerText = val[header];
 	        } else if ((0, _lodash.isFunction)(header)) {
-	          header = header(val, index);
+	          headerText = header(val, index);
 	        }
 	      } else {
-	        header = 'No header attr update struct.';
+	        headerText = 'No header attr update struct.';
 	      }
 
 	      return _react2["default"].createElement(
 	        _Panel2["default"],
-	        _extends({ key: index, header: header }, props),
+	        _extends({ key: index, header: headerText }, props),
 	        _react2["default"].createElement(_Struct2["default"], _extends({
 	          key: index,
 	          value: val,
@@ -28697,19 +28698,20 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return [];
 	    }
 	    return this.state.value.map(function (val, index) {
+	      var headerText = '';
 	      if (!(0, _lodash.isUndefined)(header)) {
 	        if ((0, _lodash.isString)(header) && (0, _lodash.has)(val, header)) {
-	          header = val[header];
+	          headerText = val[header];
 	        } else if ((0, _lodash.isFunction)(header)) {
-	          header = header(val, index);
+	          headerText = header(val, index);
 	        }
 	      } else {
-	        header = 'No header attr update struct.';
+	        headerText = 'No header attr update struct.';
 	      }
 
 	      return _react2["default"].createElement(
 	        _Panel2["default"],
-	        _extends({ key: index, header: header }, props),
+	        _extends({ key: index, header: headerText }, props),
 	        Object.keys(struct).map(function (key) {
 	          return _react2["default"].createElement(_Struct2["default"], _extends({
 	            key: index + '-' + key,
