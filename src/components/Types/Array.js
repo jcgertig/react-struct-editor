@@ -45,8 +45,24 @@ class ArrayType extends BasicType {
     this.setState({ value }, this.handleChange)
   }
 
+  handleAdd() {
+    let { value } = this.state
+    const struct = this.getStruct()
+    if (typeof value === 'undefined') {
+      value = []
+    }
+    value.push(defaultFromStruct(struct))
+    this.setState({ value })
+  }
+
+  handleRemove(index) {
+    const { value } = this.state
+    value.splice(index, 1)
+    this.setState({ value })
+  }
+
   renderIndexs() {
-    let { struct: { header, ...props } } = this.props
+    let { struct: { header, ...props }, displayProps } = this.props
     const struct = this.getStruct()
 
     return this.state.value.map((val, index) => {
@@ -71,6 +87,7 @@ class ArrayType extends BasicType {
           />
           <button
             style={{ marginTop: 25 }}
+            className={displayProps.buttonClass}
             onClick={() => this.handleRemove(index)}
           >
             {has(struct, 'removeText') ? struct.removeText : 'Remove Item'}
@@ -80,31 +97,24 @@ class ArrayType extends BasicType {
     })
   }
 
-  handleAdd() {
-    const { value } = this.state
-    const struct = this.getStruct()
-    value.push(defaultFromStruct(struct))
-    this.setState({ value })
-  }
-
-  handleRemove(index) {
-    const { value } = this.state
-    value.splice(index, 1)
-    this.setState({ value })
-  }
-
   render() {
-    const { struct } = this.props
+    const { struct, displayProps } = this.props
     return (
       <div style={{ marginTop: '25px' }}>
-        <label>{struct.label}</label><br />
+        <label style={{ marginBottom: 10 }} className={displayProps.labelClass}>
+          {struct.label}
+        </label>
         <Accordion
           orderable={has(struct, 'orderable') ? struct.orderable : true}
           reorder={this.updateCollectionOrder}
         >
           {this.renderIndexs()}
         </Accordion>
-        <button style={{ marginTop: 25 }} onClick={this.handleAdd}>
+        <button
+          style={{ marginTop: 25 }}
+          onClick={this.handleAdd}
+          className={displayProps.buttonClass}
+        >
           {has(struct, 'addText') ? struct.addText : 'Add Item'}
         </button>
       </div>

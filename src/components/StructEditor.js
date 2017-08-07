@@ -7,7 +7,7 @@ import Types from './Types'
 class StructEditor extends Component {
 
   render() {
-    const { struct, data, setData } = this.props
+    const { struct, data, setData, buttonClass, inputClass, labelClass } = this.props
 
     if (struct.type === 'Object') {
       const typeProps = {}
@@ -21,6 +21,11 @@ class StructEditor extends Component {
           struct={struct}
           onChange={setData}
           top={true}
+          displayProps={{
+            buttonClass,
+            inputClass,
+            labelClass
+          }}
           {...typeProps}
         />
       )
@@ -34,6 +39,9 @@ StructEditor.propTypes = {
   updateRef: PropTypes.func,
   optionTypes: PropTypes.object,
   collectionTypes: PropTypes.object,
+  buttonClass: PropTypes.string,
+  inputClass: PropTypes.string,
+  labelClass: PropTypes.string,
   data: PropTypes.object.isRequired,
   setData: PropTypes.func.isRequired,
   struct: PropTypes.object.isRequired

@@ -48,8 +48,11 @@ class CollectionType extends BasicType {
   }
 
   handleAdd() {
-    const { value } = this.state
+    let { value } = this.state
     const struct = this.getStruct()
+    if (typeof value === 'undefined') {
+      value = []
+    }
     value.push(defaultFromStruct(struct))
     this.setState({ value })
   }
@@ -61,7 +64,7 @@ class CollectionType extends BasicType {
   }
 
   renderIndexs() {
-    let { struct: { header, ...props } } = this.props
+    let { struct: { header, ...props }, displayProps } = this.props
     const struct = this.getStruct()
     if (typeof this.state.value === 'undefined') {
       return []
@@ -84,12 +87,14 @@ class CollectionType extends BasicType {
               key={`${index}-${key}`}
               value={val[key]}
               struct={struct[key]}
+              displayProps={displayProps}
               onChange={this.updateIndexAttr.bind(this, index, key)}
               {...getTypeProps(this.props)}
             />
           ))}
           <button
             style={{ marginTop: 25 }}
+            className={displayProps.buttonClass}
             onClick={() => this.handleRemove(index)}
           >
             {has(struct, 'removeText') ? struct.removeText : 'Remove Item'}
@@ -100,17 +105,23 @@ class CollectionType extends BasicType {
   }
 
   render() {
-    const { struct } = this.props
+    const { struct, displayProps } = this.props
     return (
       <div style={{ marginTop: '25px' }}>
-        <label>{struct.label}</label><br />
+        <label style={{ marginBottom: 10 }} className={displayProps.labelClass}>
+          {struct.label}
+        </label>
         <Accordion
           orderable={has(struct, 'orderable') ? struct.orderable : true}
           reorder={this.updateCollectionOrder}
         >
           {this.renderIndexs()}
         </Accordion>
-        <button style={{ marginTop: 25 }} onClick={this.handleAdd}>
+        <button
+          style={{ marginTop: 25 }}
+          className={displayProps.className}
+          onClick={this.handleAdd}
+        >
           {has(struct, 'addText') ? struct.addText : 'Add Item'}
         </button>
       </div>

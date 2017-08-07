@@ -12,13 +12,16 @@ class OptionType extends BasicType {
   }
 
   render() {
-    const { type, struct, optionTypes } = this.props
+    const { type, struct, optionTypes, displayProps } = this.props
     return (
       <div style={{ marginTop: '25px' }}>
-        <label>{struct.label}</label><br />
+        <label style={{ marginBottom: 10 }} className={displayProps.labelClass}>
+          {struct.label}
+        </label>
         <Select
           value={this.state.value}
           onChange={this.updateValue}
+          className={displayProps.inputClass}
           options={optionTypes[type.replace('Option', '')]}
         />
       </div>

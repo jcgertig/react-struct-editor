@@ -17,10 +17,13 @@ class BooleanType extends BasicType {
   render() {
     return (
       <div style={{ marginTop: '25px' }}>
-        <label>{this.props.struct.label}</label><br />
+        <label style={{ marginBottom: 10 }} className={this.props.displayProps.labelClass}>
+          {this.props.struct.label}
+        </label>
         <input
           type="checkbox"
           onChange={this.updateValue}
+          className={this.props.displayProps.inputClass}
           style={{ width: '100%', boxSizing: 'border-box' }}
           checked={isUndefined(this.state.value) ? false : this.state.value}
         />

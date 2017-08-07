@@ -68,6 +68,7 @@ class KeyValueType extends BasicType {
           struct={struct.keyStruct}
           value={this.state.value[index][0]}
           onChange={this.updatePair.bind(this, index, 0)}
+          displayProps={this.props.displayProps}
           {...getTypeProps(this.props)}
         />
       </div>
@@ -83,6 +84,7 @@ class KeyValueType extends BasicType {
           struct={struct}
           value={this.state.value[index][1]}
           onChange={this.updatePair.bind(this, index, 1)}
+          displayProps={this.props.displayProps}
           {...getTypeProps(this.props)}
         />
       </div>
@@ -115,10 +117,12 @@ class KeyValueType extends BasicType {
   }
 
   render() {
-    const { struct } = this.props
+    const { struct, displayProps } = this.props
     return (
       <div style={{ marginTop: '25px' }}>
-        <label>{struct.label}</label><br />
+        <label style={{ marginBottom: 10 }} className={displayProps.labelClass}>
+          {struct.label}
+        </label>
         <Accordion
           orderable={has(struct, 'orderable') ? struct.orderable : true}
           reorder={this.updateCollectionOrder}

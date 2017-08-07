@@ -16,15 +16,17 @@ class NumberType extends BasicType {
 
   render() {
     return (
-      <div style={{ marginTop: '25px' }}>
-        <label>{this.props.struct.label}</label><br />
+      <div style={{ marginTop: 25 }}>
+        <label style={{ marginBottom: 10 }} className={this.props.displayProps.labelClass}>
+          {this.props.struct.label}
+        </label>
         <div className="Select">
           <input
             type="number"
             autoComplete="off"
             value={this.state.value}
             onChange={this.updateValue}
-            className="Select-control Input"
+            className={'Select-control Input ' + this.props.displayProps.inputClass}
           />
         </div>
       </div>

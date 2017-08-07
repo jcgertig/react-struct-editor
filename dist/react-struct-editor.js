@@ -25257,7 +25257,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  ObjectEditor.prototype.render = function render() {
 	    var _this3 = this;
 
-	    var objectStruct = this.props.struct.objectStruct;
+	    var _props = this.props,
+	        objectStruct = _props.struct.objectStruct,
+	        displayProps = _props.displayProps;
 
 	    var value = (0, _lodash.cloneDeep)(this.state);
 
@@ -25269,7 +25271,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          key: index,
 	          value: value[key],
 	          struct: objectStruct[key],
-	          onChange: _this3.createChangeHandler(key)
+	          onChange: _this3.createChangeHandler(key),
+	          displayProps: displayProps
 	        }, (0, _getTypeProps2["default"])(_this3.props)));
 	      })
 	    );
@@ -27820,6 +27823,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  return _react2["default"].createElement(_reactSelect2["default"], {
 	    options: props.options,
 	    value: props.value,
+	    className: props.className,
 	    onChange: function onChange(val) {
 	      return props.onChange({ target: { value: val.value } });
 	    }
@@ -27882,7 +27886,10 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _props = this.props,
 	        struct = _props.struct,
 	        data = _props.data,
-	        setData = _props.setData;
+	        setData = _props.setData,
+	        buttonClass = _props.buttonClass,
+	        inputClass = _props.inputClass,
+	        labelClass = _props.labelClass;
 
 
 	    if (struct.type === 'Object') {
@@ -27897,7 +27904,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	            value: data,
 	            struct: struct,
 	            onChange: setData,
-	            top: true
+	            top: true,
+	            displayProps: {
+	              buttonClass: buttonClass,
+	              inputClass: inputClass,
+	              labelClass: labelClass
+	            }
 	          }, typeProps))
 	        };
 	      }();
@@ -27919,6 +27931,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	  updateRef: _react.PropTypes.func,
 	  optionTypes: _react.PropTypes.object,
 	  collectionTypes: _react.PropTypes.object,
+	  buttonClass: _react.PropTypes.string,
+	  inputClass: _react.PropTypes.string,
+	  labelClass: _react.PropTypes.string,
 	  data: _react.PropTypes.object.isRequired,
 	  setData: _react.PropTypes.func.isRequired,
 	  struct: _react.PropTypes.object.isRequired
@@ -28047,12 +28062,32 @@ return /******/ (function(modules) { // webpackBootstrap
 	    this.setState({ value: value }, this.handleChange);
 	  };
 
+	  ArrayType.prototype.handleAdd = function handleAdd() {
+	    var value = this.state.value;
+
+	    var struct = this.getStruct();
+	    if (typeof value === 'undefined') {
+	      value = [];
+	    }
+	    value.push((0, _defaultFromStruct2["default"])(struct));
+	    this.setState({ value: value });
+	  };
+
+	  ArrayType.prototype.handleRemove = function handleRemove(index) {
+	    var value = this.state.value;
+
+	    value.splice(index, 1);
+	    this.setState({ value: value });
+	  };
+
 	  ArrayType.prototype.renderIndexs = function renderIndexs() {
 	    var _this2 = this;
 
-	    var _props$struct = this.props.struct,
+	    var _props = this.props,
+	        _props$struct = _props.struct,
 	        header = _props$struct.header,
-	        props = _objectWithoutProperties(_props$struct, ['header']);
+	        props = _objectWithoutProperties(_props$struct, ['header']),
+	        displayProps = _props.displayProps;
 
 	    var struct = this.getStruct();
 
@@ -28080,6 +28115,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          'button',
 	          {
 	            style: { marginTop: 25 },
+	            className: displayProps.buttonClass,
 	            onClick: function onClick() {
 	              return _this2.handleRemove(index);
 	            }
@@ -28090,33 +28126,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	    });
 	  };
 
-	  ArrayType.prototype.handleAdd = function handleAdd() {
-	    var value = this.state.value;
-
-	    var struct = this.getStruct();
-	    value.push((0, _defaultFromStruct2["default"])(struct));
-	    this.setState({ value: value });
-	  };
-
-	  ArrayType.prototype.handleRemove = function handleRemove(index) {
-	    var value = this.state.value;
-
-	    value.splice(index, 1);
-	    this.setState({ value: value });
-	  };
-
 	  ArrayType.prototype.render = function render() {
-	    var struct = this.props.struct;
+	    var _props2 = this.props,
+	        struct = _props2.struct,
+	        displayProps = _props2.displayProps;
 
 	    return _react2["default"].createElement(
 	      'div',
 	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
-	        null,
+	        { style: { marginBottom: 10 }, className: displayProps.labelClass },
 	        struct.label
 	      ),
-	      _react2["default"].createElement('br', null),
 	      _react2["default"].createElement(
 	        _Accordion2["default"],
 	        {
@@ -28127,7 +28149,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      ),
 	      _react2["default"].createElement(
 	        'button',
-	        { style: { marginTop: 25 }, onClick: this.handleAdd },
+	        {
+	          style: { marginTop: 25 },
+	          onClick: this.handleAdd,
+	          className: displayProps.buttonClass
+	        },
 	        (0, _lodash.has)(struct, 'addText') ? struct.addText : 'Add Item'
 	      )
 	    );
@@ -28190,13 +28216,13 @@ return /******/ (function(modules) { // webpackBootstrap
 	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
-	        null,
+	        { style: { marginBottom: 10 }, className: this.props.displayProps.labelClass },
 	        this.props.struct.label
 	      ),
-	      _react2["default"].createElement('br', null),
 	      _react2["default"].createElement('input', {
 	        type: 'checkbox',
 	        onChange: this.updateValue,
+	        className: this.props.displayProps.inputClass,
 	        style: { width: '100%', boxSizing: 'border-box' },
 	        checked: (0, _lodash.isUndefined)(this.state.value) ? false : this.state.value
 	      })
@@ -28325,6 +28351,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var value = this.state.value;
 
 	    var struct = this.getStruct();
+	    if (typeof value === 'undefined') {
+	      value = [];
+	    }
 	    value.push((0, _defaultFromStruct2["default"])(struct));
 	    this.setState({ value: value });
 	  };
@@ -28339,9 +28368,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	  CollectionType.prototype.renderIndexs = function renderIndexs() {
 	    var _this2 = this;
 
-	    var _props$struct = this.props.struct,
+	    var _props = this.props,
+	        _props$struct = _props.struct,
 	        header = _props$struct.header,
-	        props = _objectWithoutProperties(_props$struct, ['header']);
+	        props = _objectWithoutProperties(_props$struct, ['header']),
+	        displayProps = _props.displayProps;
 
 	    var struct = this.getStruct();
 	    if (typeof this.state.value === 'undefined') {
@@ -28366,6 +28397,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	            key: index + '-' + key,
 	            value: val[key],
 	            struct: struct[key],
+	            displayProps: displayProps,
 	            onChange: _this2.updateIndexAttr.bind(_this2, index, key)
 	          }, (0, _getTypeProps2["default"])(_this2.props)));
 	        }),
@@ -28373,6 +28405,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          'button',
 	          {
 	            style: { marginTop: 25 },
+	            className: displayProps.buttonClass,
 	            onClick: function onClick() {
 	              return _this2.handleRemove(index);
 	            }
@@ -28384,17 +28417,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  CollectionType.prototype.render = function render() {
-	    var struct = this.props.struct;
+	    var _props2 = this.props,
+	        struct = _props2.struct,
+	        displayProps = _props2.displayProps;
 
 	    return _react2["default"].createElement(
 	      'div',
 	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
-	        null,
+	        { style: { marginBottom: 10 }, className: displayProps.labelClass },
 	        struct.label
 	      ),
-	      _react2["default"].createElement('br', null),
 	      _react2["default"].createElement(
 	        _Accordion2["default"],
 	        {
@@ -28405,7 +28439,11 @@ return /******/ (function(modules) { // webpackBootstrap
 	      ),
 	      _react2["default"].createElement(
 	        'button',
-	        { style: { marginTop: 25 }, onClick: this.handleAdd },
+	        {
+	          style: { marginTop: 25 },
+	          className: displayProps.className,
+	          onClick: this.handleAdd
+	        },
 	        (0, _lodash.has)(struct, 'addText') ? struct.addText : 'Add Item'
 	      )
 	    );
@@ -28572,7 +28610,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: index,
 	        struct: struct.keyStruct,
 	        value: this.state.value[index][0],
-	        onChange: this.updatePair.bind(this, index, 0)
+	        onChange: this.updatePair.bind(this, index, 0),
+	        displayProps: this.props.displayProps
 	      }, (0, _getTypeProps2["default"])(this.props)))
 	    );
 	  };
@@ -28586,7 +28625,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	        key: index,
 	        struct: struct,
 	        value: this.state.value[index][1],
-	        onChange: this.updatePair.bind(this, index, 1)
+	        onChange: this.updatePair.bind(this, index, 1),
+	        displayProps: this.props.displayProps
 	      }, (0, _getTypeProps2["default"])(this.props)))
 	    );
 	  };
@@ -28623,17 +28663,18 @@ return /******/ (function(modules) { // webpackBootstrap
 	  };
 
 	  KeyValueType.prototype.render = function render() {
-	    var struct = this.props.struct;
+	    var _props = this.props,
+	        struct = _props.struct,
+	        displayProps = _props.displayProps;
 
 	    return _react2["default"].createElement(
 	      'div',
 	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
-	        null,
+	        { style: { marginBottom: 10 }, className: displayProps.labelClass },
 	        struct.label
 	      ),
-	      _react2["default"].createElement('br', null),
 	      _react2["default"].createElement(
 	        _Accordion2["default"],
 	        {
@@ -28699,13 +28740,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	  NumberType.prototype.render = function render() {
 	    return _react2["default"].createElement(
 	      'div',
-	      { style: { marginTop: '25px' } },
+	      { style: { marginTop: 25 } },
 	      _react2["default"].createElement(
 	        'label',
-	        null,
+	        { style: { marginBottom: 10 }, className: this.props.displayProps.labelClass },
 	        this.props.struct.label
 	      ),
-	      _react2["default"].createElement('br', null),
 	      _react2["default"].createElement(
 	        'div',
 	        { className: 'Select' },
@@ -28714,7 +28754,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          autoComplete: 'off',
 	          value: this.state.value,
 	          onChange: this.updateValue,
-	          className: 'Select-control Input'
+	          className: 'Select-control Input ' + this.props.displayProps.inputClass
 	        })
 	      )
 	    );
@@ -28774,16 +28814,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  ObjectType.prototype.render = function render() {
-	    if (!this.props.top) {
+	    var _props = this.props,
+	        top = _props.top,
+	        displayProps = _props.displayProps;
+
+	    if (!top) {
 	      return _react2["default"].createElement(
 	        'div',
 	        { style: { marginTop: '25px' } },
 	        _react2["default"].createElement(
 	          'label',
-	          null,
+	          { style: { marginBottom: 10 }, className: displayProps.labelClass },
 	          this.props.struct.label
 	        ),
-	        _react2["default"].createElement('br', null),
 	        _react2["default"].createElement(_ObjectEditor2["default"], this.props)
 	      );
 	    }
@@ -28845,20 +28888,21 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var _props = this.props,
 	        type = _props.type,
 	        struct = _props.struct,
-	        optionTypes = _props.optionTypes;
+	        optionTypes = _props.optionTypes,
+	        displayProps = _props.displayProps;
 
 	    return _react2["default"].createElement(
 	      'div',
 	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
-	        null,
+	        { style: { marginBottom: 10 }, className: displayProps.labelClass },
 	        struct.label
 	      ),
-	      _react2["default"].createElement('br', null),
 	      _react2["default"].createElement(_Select2["default"], {
 	        value: this.state.value,
 	        onChange: this.updateValue,
+	        className: displayProps.inputClass,
 	        options: optionTypes[type.replace('Option', '')]
 	      })
 	    );
@@ -28917,10 +28961,9 @@ return /******/ (function(modules) { // webpackBootstrap
 	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
-	        null,
+	        { style: { marginBottom: 10 }, className: this.props.displayProps.labelClass },
 	        this.props.struct.label
 	      ),
-	      _react2["default"].createElement('br', null),
 	      _react2["default"].createElement(
 	        'div',
 	        { className: 'Select' },
@@ -28929,7 +28972,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	          autoComplete: 'off',
 	          value: this.state.value,
 	          onChange: this.updateValue,
-	          className: 'Select-control Input'
+	          className: 'Select-control Input ' + this.props.displayProps.inputClass
 	        })
 	      )
 	    );

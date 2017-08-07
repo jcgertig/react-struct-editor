@@ -7,6 +7,7 @@ const Select = (props) => {
     <RSelect
       options={props.options}
       value={props.value}
+      className={props.className}
       onChange={(val) => props.onChange({ target: { value: val.value } })}
     />
   )
