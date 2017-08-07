@@ -15,7 +15,7 @@ class ObjectType extends BasicType {
   render() {
     if (!this.props.top) {
       return (
-        <div>
+        <div style={{ marginTop: '25px' }}>
           <label>{this.props.struct.label}</label><br />
           <ObjectEditor {...this.props} />
         </div>

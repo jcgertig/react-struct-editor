@@ -14,7 +14,7 @@ class OptionType extends BasicType {
   render() {
     const { type, struct, optionTypes } = this.props
     return (
-      <div>
+      <div style={{ marginTop: '25px' }}>
         <label>{struct.label}</label><br />
         <Select
           value={this.state.value}

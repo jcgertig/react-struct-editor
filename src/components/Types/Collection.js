@@ -65,14 +65,13 @@ class CollectionType extends BasicType {
       return (
         <Panel key={index} header={header} {...props}>
           {Object.keys(struct).map(key => (
-            <div key={`${index}-${key}`} style={{ marginTop: '25px' }}>
-              <Struct
-                value={val[key]}
-                struct={struct[key]}
-                onChange={this.updateIndexAttr.bind(this, index, key)}
-                {...getTypeProps(this.props)}
-              />
-            </div>
+            <Struct
+              key={`${index}-${key}`}
+              value={val[key]}
+              struct={struct[key]}
+              onChange={this.updateIndexAttr.bind(this, index, key)}
+              {...getTypeProps(this.props)}
+            />
           ))}
         </Panel>
       )
@@ -82,7 +81,7 @@ class CollectionType extends BasicType {
   render() {
     const { struct } = this.props
     return (
-      <div>
+      <div style={{ marginTop: '25px' }}>
         <label>{struct.label}</label><br />
         <Accordion
           orderable={has(struct, 'orderable') ? struct.orderable : true}

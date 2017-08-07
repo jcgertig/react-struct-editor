@@ -16,7 +16,7 @@ class NumberType extends BasicType {
 
   render() {
     return (
-      <div>
+      <div style={{ marginTop: '25px' }}>
         <label>{this.props.struct.label}</label><br />
         <div className="Select">
           <input

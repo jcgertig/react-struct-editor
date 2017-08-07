@@ -28037,16 +28037,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	      return _react2["default"].createElement(
 	        _Panel2["default"],
 	        _extends({ key: index, header: header }, props),
-	        _react2["default"].createElement(
-	          'div',
-	          { style: { marginTop: '25px' } },
-	          _react2["default"].createElement(_Struct2["default"], _extends({
-	            key: index,
-	            value: val,
-	            struct: struct,
-	            onChange: _this2.updateIndex.bind(_this2, index)
-	          }, (0, _getTypeProps2["default"])(_this2.props)))
-	        )
+	        _react2["default"].createElement(_Struct2["default"], _extends({
+	          key: index,
+	          value: val,
+	          struct: struct,
+	          onChange: _this2.updateIndex.bind(_this2, index)
+	        }, (0, _getTypeProps2["default"])(_this2.props)))
 	      );
 	    });
 	  };
@@ -28056,7 +28052,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return _react2["default"].createElement(
 	      'div',
-	      null,
+	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
 	        null,
@@ -28128,7 +28124,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  BooleanType.prototype.render = function render() {
 	    return _react2["default"].createElement(
 	      'div',
-	      null,
+	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
 	        null,
@@ -28284,15 +28280,12 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _Panel2["default"],
 	        _extends({ key: index, header: header }, props),
 	        Object.keys(struct).map(function (key) {
-	          return _react2["default"].createElement(
-	            'div',
-	            { key: index + '-' + key, style: { marginTop: '25px' } },
-	            _react2["default"].createElement(_Struct2["default"], _extends({
-	              value: val[key],
-	              struct: struct[key],
-	              onChange: _this2.updateIndexAttr.bind(_this2, index, key)
-	            }, (0, _getTypeProps2["default"])(_this2.props)))
-	          );
+	          return _react2["default"].createElement(_Struct2["default"], _extends({
+	            key: index + '-' + key,
+	            value: val[key],
+	            struct: struct[key],
+	            onChange: _this2.updateIndexAttr.bind(_this2, index, key)
+	          }, (0, _getTypeProps2["default"])(_this2.props)));
 	        })
 	      );
 	    });
@@ -28303,7 +28296,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return _react2["default"].createElement(
 	      'div',
-	      null,
+	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
 	        null,
@@ -28537,7 +28530,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return _react2["default"].createElement(
 	      'div',
-	      null,
+	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
 	        null,
@@ -28609,7 +28602,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  NumberType.prototype.render = function render() {
 	    return _react2["default"].createElement(
 	      'div',
-	      null,
+	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
 	        null,
@@ -28687,7 +28680,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	    if (!this.props.top) {
 	      return _react2["default"].createElement(
 	        'div',
-	        null,
+	        { style: { marginTop: '25px' } },
 	        _react2["default"].createElement(
 	          'label',
 	          null,
@@ -28759,7 +28752,7 @@ return /******/ (function(modules) { // webpackBootstrap
 
 	    return _react2["default"].createElement(
 	      'div',
-	      null,
+	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
 	        null,
@@ -28824,7 +28817,7 @@ return /******/ (function(modules) { // webpackBootstrap
 	  TextType.prototype.render = function render() {
 	    return _react2["default"].createElement(
 	      'div',
-	      null,
+	      { style: { marginTop: '25px' } },
 	      _react2["default"].createElement(
 	        'label',
 	        null,

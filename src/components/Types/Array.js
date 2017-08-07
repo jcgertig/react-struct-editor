@@ -60,15 +60,13 @@ class ArrayType extends BasicType {
 
       return (
         <Panel key={index} header={header} {...props}>
-          <div style={{ marginTop: '25px' }}>
-            <Struct
-              key={index}
-              value={val}
-              struct={struct}
-              onChange={this.updateIndex.bind(this, index)}
-              {...getTypeProps(this.props)}
-            />
-          </div>
+          <Struct
+            key={index}
+            value={val}
+            struct={struct}
+            onChange={this.updateIndex.bind(this, index)}
+            {...getTypeProps(this.props)}
+          />
         </Panel>
       )
     })
@@ -77,7 +75,7 @@ class ArrayType extends BasicType {
   render() {
     const { struct } = this.props
     return (
-      <div>
+      <div style={{ marginTop: '25px' }}>
         <label>{struct.label}</label><br />
         <Accordion
           orderable={has(struct, 'orderable') ? struct.orderable : true}
