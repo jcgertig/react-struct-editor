@@ -1,4 +1,5 @@
-import { Component, PropTypes } from 'react'
+import { Component } from 'react'
+import PropTypes from 'prop-types'
 import { camelCase, has } from 'lodash'
 
 class BasicType extends Component {

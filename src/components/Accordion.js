@@ -1,4 +1,5 @@
-import React, { Component, PropTypes, Children, cloneElement } from 'react'
+import React, { Component, Children, cloneElement } from 'react'
+import PropTypes from 'prop-types'
 import { cloneDeep, pull, indexOf, find, isEqual } from 'lodash'
 import autoBind from '../utils/autoBind'
 
