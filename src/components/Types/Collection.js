@@ -5,6 +5,7 @@ import {
 } from 'lodash'
 
 import getTypeProps from '../../utils/getTypeProps'
+import defaultFromStruct from '../../utils/defaultFromStruct'
 import autoBind from '../../utils/autoBind'
 
 import Accordion from '../Accordion' // eslint-disable-line no-unused-vars
@@ -23,7 +24,8 @@ class CollectionType extends BasicType {
     this.type = 'Collection'
 
     autoBind(this, [
-      'handleChange', 'updateIndexAttr', 'updateCollectionOrder', 'renderIndexs'
+      'handleChange', 'updateIndexAttr', 'updateCollectionOrder',
+      'renderIndexs', 'handleAdd', 'handleRemove'
     ])
   }
 
@@ -43,6 +45,19 @@ class CollectionType extends BasicType {
       value.push(this.state.value[parseInt(order, 10)])
     }
     this.setState({ value }, this.handleChange)
+  }
+
+  handleAdd() {
+    const { value } = this.state
+    const struct = this.getStruct()
+    value.push(defaultFromStruct(struct))
+    this.setState({ value })
+  }
+
+  handleRemove(index) {
+    const { value } = this.state
+    value.splice(index, 1)
+    this.setState({ value })
   }
 
   renderIndexs() {
@@ -73,6 +88,12 @@ class CollectionType extends BasicType {
               {...getTypeProps(this.props)}
             />
           ))}
+          <button
+            style={{ marginTop: 25 }}
+            onClick={() => this.handleRemove(index)}
+          >
+            {has(struct, 'removeText') ? struct.removeText : 'Remove Item'}
+          </button>
         </Panel>
       )
     })
@@ -89,6 +110,9 @@ class CollectionType extends BasicType {
         >
           {this.renderIndexs()}
         </Accordion>
+        <button style={{ marginTop: 25 }} onClick={this.handleAdd}>
+          {has(struct, 'addText') ? struct.addText : 'Add Item'}
+        </button>
       </div>
     )
   }

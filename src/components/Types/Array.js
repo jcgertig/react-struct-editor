@@ -3,6 +3,7 @@ import BasicType from './BasicType'
 import { isArray, has, cloneDeep, isUndefined, isString, isFunction } from 'lodash'
 
 import getTypeProps from '../../utils/getTypeProps'
+import defaultFromStruct from '../../utils/defaultFromStruct'
 import autoBind from '../../utils/autoBind'
 
 import Accordion from '../Accordion' // eslint-disable-line no-unused-vars
@@ -21,7 +22,8 @@ class ArrayType extends BasicType {
     this.type = 'Array'
 
     autoBind(this, [
-      'handleChange', 'updateIndex', 'updateCollectionOrder', 'renderIndexs'
+      'handleChange', 'updateIndex', 'updateCollectionOrder',
+      'renderIndexs', 'handleAdd', 'handleRemove'
     ])
   }
 
@@ -67,9 +69,28 @@ class ArrayType extends BasicType {
             onChange={this.updateIndex.bind(this, index)}
             {...getTypeProps(this.props)}
           />
+          <button
+            style={{ marginTop: 25 }}
+            onClick={() => this.handleRemove(index)}
+          >
+            {has(struct, 'removeText') ? struct.removeText : 'Remove Item'}
+          </button>
         </Panel>
       )
     })
+  }
+
+  handleAdd() {
+    const { value } = this.state
+    const struct = this.getStruct()
+    value.push(defaultFromStruct(struct))
+    this.setState({ value })
+  }
+
+  handleRemove(index) {
+    const { value } = this.state
+    value.splice(index, 1)
+    this.setState({ value })
   }
 
   render() {
@@ -83,6 +104,9 @@ class ArrayType extends BasicType {
         >
           {this.renderIndexs()}
         </Accordion>
+        <button style={{ marginTop: 25 }} onClick={this.handleAdd}>
+          {has(struct, 'addText') ? struct.addText : 'Add Item'}
+        </button>
       </div>
     )
   }
