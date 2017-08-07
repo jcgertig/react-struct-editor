@@ -4,8 +4,8 @@ import defaultFromStruct from './utils/defaultFromStruct'
 import Accordion from './components/Accordion'
 import Panel from './components/Panel'
 import Struct from './components/Struct'
-import Input from './components/Input'
+import Types from './components/Types'
 
 export default StructEditor
 
-export { StructEditor, Struct, Accordion, Panel, Input, arrayToOptions, defaultFromStruct }
+export { StructEditor, Struct, Accordion, Panel, Types, arrayToOptions, defaultFromStruct }

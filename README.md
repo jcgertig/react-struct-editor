@@ -1,10 +1,12 @@
 React Struct Editor
 =========================
 
-[![build status](https://img.shields.io/travis/reactjs/react-redux/master.svg?style=flat-square)](https://travis-ci.org/reactjs/react-redux) [![npm version](https://img.shields.io/npm/v/react-redux.svg?style=flat-square)](https://www.npmjs.com/package/react-redux)
-[![npm downloads](https://img.shields.io/npm/dm/react-redux.svg?style=flat-square)](https://www.npmjs.com/package/react-redux)
-[![redux channel on slack](https://img.shields.io/badge/slack-redux@reactiflux-61DAFB.svg?style=flat-square)](http://www.reactiflux.com)
-
+[![Downloads][npm-dm]][package-url]
+[![Downloads][npm-dt]][package-url]
+[![NPM Version][npm-v]][package-url]
+[![Dependencies][deps]][package-url]
+[![Dev Dependencies][dev-deps]][package-url]
+[![License][license]][package-url]
 
 ## Installation
 
@@ -25,3 +27,11 @@ This assumes that you’re using [npm](http://npmjs.com/) package manager with a
 ## License
 
 MIT
+
+[npm-dm]: https://img.shields.io/npm/dm/react-struct-editor.svg
+[npm-dt]: https://img.shields.io/npm/dt/react-struct-editor.svg
+[npm-v]: https://img.shields.io/npm/v/react-struct-editor.svg
+[deps]: https://img.shields.io/david/jcgertig/react-struct-editor.svg
+[dev-deps]: https://img.shields.io/david/dev/jcgertig/react-struct-editor.svg
+[license]: https://img.shields.io/npm/l/react-struct-editor.svg
+[package-url]: https://npmjs.com/package/react-struct-editor

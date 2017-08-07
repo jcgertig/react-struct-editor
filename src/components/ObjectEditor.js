@@ -1,114 +1,71 @@
-import React, { Component, PropTypes } from 'react'
-import { has, toPairs, cloneDeep } from 'lodash'
-import autoBind from '../utils/autoBind'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { cloneDeep } from 'lodash'
 
-import Accordion from './Accordion'
-import KeyValueEditor from './KeyValueEditor'
+import autoBind from '../utils/autoBind'
+import getTypeProps from '../utils/getTypeProps'
+
+import Struct from './Struct' // eslint-disable-line
 
 class ObjectEditor extends Component {
 
   constructor() {
     super()
 
-    this.state = {
-      value: {}
-    }
+    this.state = {}
 
-    autoBind(this, [ 'updateValue', 'updatePair', 'updateState', 'updateCollectionOrder' ])
+    autoBind(this, [ 'updateStateKey', 'createChangeHandler' ])
   }
 
   componentWillMount() {
-    let { value } = this.props
-    value = this.props.struct.type === 'KeyValue' ? toPairs(value) : value
-    this.setState({ value })
+    this.setState(this.props.value)
   }
 
   componentWillReceiveProps(nextProps) {
-    let { value } = nextProps
-    value = nextProps.struct.type === 'KeyValue' ? toPairs(value) : value
-    this.setState({ value })
+    this.setState(nextProps.value)
   }
 
-  updateValue() {
-    const { value } = this.state
-    if (this.props.struct.type === 'Object') {
-      this.props.onChange(this.props.name, value)
-    } else {
-      const data = {}
-      for (const val of value) {
-        data[val[0]] = val[1]
-      }
-      this.props.onChange(this.props.name, data)
-    }
+  updateStateKey(key, val) {
+    this.setState({ [key]: val }, () => this.props.onChange(this.state))
   }
 
-  updatePair(index, data) {
-    const { value } = cloneDeep(this.state)
-    value[index] = data
-    this.setState({ value }, this.updateValue)
-  }
-
-  updateState(value) {
-    this.setState({ value }, this.updateValue)
-  }
-
-  updateCollectionOrder(newOrder) {
-    this.props.updateCollectionOrder(this.props.name, newOrder)
+  createChangeHandler(key) {
+    return this.updateStateKey.bind(this, key)
   }
 
   render() {
-    const { struct } = this.props
-
-    const renderKeyValuePairs = () => {
-      const { value } = this.state
-      const { optionTypes, collectionTypes } = this.props
-
-      if (struct.type === 'KeyValue') {
-        return value.map((val, i) => (
-          <KeyValueEditor
-            key={i}
-            data={val}
-            struct={struct}
-            optionTypes={optionTypes}
-            updateData={this.updatePair}
-          />
-        ))
-      } else if (struct.type === 'Object') {
-        return (
-          <KeyValueEditor
-            data={value}
-            struct={struct}
-            optionTypes={optionTypes}
-            updateData={this.updateState}
-            collectionTypes={collectionTypes}
-          />
-        )
-      }
-    }
-
-    if (struct.type === 'Object') {
-      return renderKeyValuePairs()
-    }
+    const { struct: { objectStruct }, displayProps } = this.props
+    const value = cloneDeep(this.state)
 
     return (
-      <Accordion
-        orderable={has(struct, 'orderable') ? struct.orderable : true}
-        reorder={this.updateCollectionOrder}
-      >
-        {renderKeyValuePairs()}
-      </Accordion>
+      <div>
+        {Object.keys(objectStruct).map((key, index) => (
+          <Struct
+            key={index}
+            value={value[key]}
+            struct={objectStruct[key]}
+            onChange={this.createChangeHandler(key)}
+            displayProps={displayProps}
+            {...getTypeProps(this.props)}
+          />
+        ))}
+      </div>
     )
   }
 }
 
 ObjectEditor.propTypes = {
-  value: PropTypes.any,
-  onChange: PropTypes.func,
-  name: PropTypes.any.isRequired,
-  struct: PropTypes.any.isRequired,
-  collectionTypes: PropTypes.object,
-  updateCollectionOrder: PropTypes.func,
-  optionTypes: PropTypes.object.isRequired
+  value: PropTypes.object,
+  struct: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  textTypes: PropTypes.object.isRequired,
+  arrayTypes: PropTypes.object.isRequired,
+  numberTypes: PropTypes.object.isRequired,
+  optionTypes: PropTypes.object.isRequired,
+  objectTypes: PropTypes.object.isRequired,
+  booleanTypes: PropTypes.object.isRequired,
+  keyValueTypes: PropTypes.object.isRequired,
+  collectionTypes: PropTypes.object.isRequired
 }
 
 export default ObjectEditor
