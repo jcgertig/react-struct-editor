@@ -82,12 +82,15 @@ class CollectionType extends BasicType {
   render() {
     const { struct } = this.props
     return (
-      <Accordion
-        orderable={has(struct, 'orderable') ? struct.orderable : true}
-        reorder={this.updateCollectionOrder}
-      >
-        {this.renderIndexs()}
-      </Accordion>
+      <div>
+        <label>{struct.label}</label><br />
+        <Accordion
+          orderable={has(struct, 'orderable') ? struct.orderable : true}
+          reorder={this.updateCollectionOrder}
+        >
+          {this.renderIndexs()}
+        </Accordion>
+      </div>
     )
   }
 }

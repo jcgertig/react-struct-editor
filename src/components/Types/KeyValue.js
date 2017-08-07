@@ -117,12 +117,15 @@ class KeyValueType extends BasicType {
   render() {
     const { struct } = this.props
     return (
-      <Accordion
-        orderable={has(struct, 'orderable') ? struct.orderable : true}
-        reorder={this.updateCollectionOrder}
-      >
-        {this.renderKeyValuePairs()}
-      </Accordion>
+      <div>
+        <label>{struct.label}</label><br />
+        <Accordion
+          orderable={has(struct, 'orderable') ? struct.orderable : true}
+          reorder={this.updateCollectionOrder}
+        >
+          {this.renderKeyValuePairs()}
+        </Accordion>
+      </div>
     )
   }
 }

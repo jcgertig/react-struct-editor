@@ -20,6 +20,7 @@ class StructEditor extends Component {
           value={data}
           struct={struct}
           onChange={setData}
+          top={true}
           {...typeProps}
         />
       )

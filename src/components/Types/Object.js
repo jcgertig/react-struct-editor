@@ -13,6 +13,14 @@ class ObjectType extends BasicType {
   }
 
   render() {
+    if (!this.props.top) {
+      return (
+        <div>
+          <label>{this.props.struct.label}</label><br />
+          <ObjectEditor {...this.props} />
+        </div>
+      )
+    }
     return <ObjectEditor {...this.props} />
   }
 }

@@ -27867,7 +27867,8 @@ return /******/ (function(modules) { // webpackBootstrap
 	          v: _react2["default"].createElement(_ObjectEditor2["default"], _extends({
 	            value: data,
 	            struct: struct,
-	            onChange: setData
+	            onChange: setData,
+	            top: true
 	          }, typeProps))
 	        };
 	      }();
@@ -28301,12 +28302,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var struct = this.props.struct;
 
 	    return _react2["default"].createElement(
-	      _Accordion2["default"],
-	      {
-	        orderable: (0, _lodash.has)(struct, 'orderable') ? struct.orderable : true,
-	        reorder: this.updateCollectionOrder
-	      },
-	      this.renderIndexs()
+	      'div',
+	      null,
+	      _react2["default"].createElement(
+	        'label',
+	        null,
+	        struct.label
+	      ),
+	      _react2["default"].createElement('br', null),
+	      _react2["default"].createElement(
+	        _Accordion2["default"],
+	        {
+	          orderable: (0, _lodash.has)(struct, 'orderable') ? struct.orderable : true,
+	          reorder: this.updateCollectionOrder
+	        },
+	        this.renderIndexs()
+	      )
 	    );
 	  };
 
@@ -28525,12 +28536,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var struct = this.props.struct;
 
 	    return _react2["default"].createElement(
-	      _Accordion2["default"],
-	      {
-	        orderable: (0, _lodash.has)(struct, 'orderable') ? struct.orderable : true,
-	        reorder: this.updateCollectionOrder
-	      },
-	      this.renderKeyValuePairs()
+	      'div',
+	      null,
+	      _react2["default"].createElement(
+	        'label',
+	        null,
+	        struct.label
+	      ),
+	      _react2["default"].createElement('br', null),
+	      _react2["default"].createElement(
+	        _Accordion2["default"],
+	        {
+	          orderable: (0, _lodash.has)(struct, 'orderable') ? struct.orderable : true,
+	          reorder: this.updateCollectionOrder
+	        },
+	        this.renderKeyValuePairs()
+	      )
 	    );
 	  };
 
@@ -28663,6 +28684,19 @@ return /******/ (function(modules) { // webpackBootstrap
 	  }
 
 	  ObjectType.prototype.render = function render() {
+	    if (!this.props.top) {
+	      return _react2["default"].createElement(
+	        'div',
+	        null,
+	        _react2["default"].createElement(
+	          'label',
+	          null,
+	          this.props.struct.label
+	        ),
+	        _react2["default"].createElement('br', null),
+	        _react2["default"].createElement(_ObjectEditor2["default"], this.props)
+	      );
+	    }
 	    return _react2["default"].createElement(_ObjectEditor2["default"], this.props);
 	  };
 
