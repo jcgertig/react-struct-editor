@@ -70,18 +70,19 @@ class CollectionType extends BasicType {
       return []
     }
     return this.state.value.map((val, index) => {
+      let headerText = ''
       if (!isUndefined(header)) {
         if (isString(header) && has(val, header)) {
-          header = val[header]
+          headerText = val[header]
         } else if (isFunction(header)) {
-          header = header(val, index)
+          headerText = header(val, index)
         }
       } else {
-        header = 'No header attr update struct.'
+        headerText = 'No header attr update struct.'
       }
 
       return (
-        <Panel key={index} header={header} {...props}>
+        <Panel key={index} header={headerText} {...props}>
           {Object.keys(struct).map(key => (
             <Struct
               key={`${index}-${key}`}
