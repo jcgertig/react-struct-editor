@@ -28039,12 +28039,6 @@ return /******/ (function(modules) { // webpackBootstrap
 	        _react2["default"].createElement(
 	          'div',
 	          { style: { marginTop: '25px' } },
-	          _react2["default"].createElement(
-	            'label',
-	            null,
-	            struct.label
-	          ),
-	          _react2["default"].createElement('br', null),
 	          _react2["default"].createElement(_Struct2["default"], _extends({
 	            key: index,
 	            value: val,
@@ -28060,12 +28054,22 @@ return /******/ (function(modules) { // webpackBootstrap
 	    var struct = this.props.struct;
 
 	    return _react2["default"].createElement(
-	      _Accordion2["default"],
-	      {
-	        orderable: (0, _lodash.has)(struct, 'orderable') ? struct.orderable : true,
-	        reorder: this.updateCollectionOrder
-	      },
-	      this.renderIndexs()
+	      'div',
+	      null,
+	      _react2["default"].createElement(
+	        'label',
+	        null,
+	        struct.label
+	      ),
+	      _react2["default"].createElement('br', null),
+	      _react2["default"].createElement(
+	        _Accordion2["default"],
+	        {
+	          orderable: (0, _lodash.has)(struct, 'orderable') ? struct.orderable : true,
+	          reorder: this.updateCollectionOrder
+	        },
+	        this.renderIndexs()
+	      )
 	    );
 	  };
 
