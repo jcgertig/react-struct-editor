@@ -59,7 +59,7 @@ class KeyValueType extends BasicType {
   }
 
   renderKeyInput(index) {
-    const { struct } = this.props
+    const { struct, onStructChange } = this.props
     return (
       <div key={index} style={{ marginTop: '25px' }}>
         <label>{struct.keyStruct.label}</label><br />
@@ -69,6 +69,7 @@ class KeyValueType extends BasicType {
           value={this.state.value[index][0]}
           onChange={this.updatePair.bind(this, index, 0)}
           displayProps={this.props.displayProps}
+          onStructChange={onStructChange}
           {...getTypeProps(this.props)}
         />
       </div>
@@ -85,6 +86,7 @@ class KeyValueType extends BasicType {
           value={this.state.value[index][1]}
           onChange={this.updatePair.bind(this, index, 1)}
           displayProps={this.props.displayProps}
+          onStructChange={this.props.onStructChange}
           {...getTypeProps(this.props)}
         />
       </div>

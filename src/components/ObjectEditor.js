@@ -34,7 +34,7 @@ class ObjectEditor extends Component {
   }
 
   render() {
-    const { struct: { objectStruct }, displayProps } = this.props
+    const { struct: { objectStruct }, displayProps, onStructChange } = this.props
     const value = cloneDeep(this.state)
 
     return (
@@ -45,6 +45,11 @@ class ObjectEditor extends Component {
             value={value[key]}
             struct={objectStruct[key]}
             onChange={this.createChangeHandler(key)}
+            info={{
+              key,
+              struct: objectStruct
+            }}
+            onStructChange={onStructChange}
             displayProps={displayProps}
             {...getTypeProps(this.props)}
           />

@@ -11,13 +11,19 @@ class TextType extends BasicType {
   }
 
   render() {
+    const { struct } = this.props
+    let inputProps = struct.inputProps || {}
+    if (struct.disabled) {
+      inputProps.disabled = true
+    }
     return (
       <div style={{ marginTop: '25px' }}>
         <label style={{ marginBottom: 10 }} className={this.props.displayProps.labelClass}>
-          {this.props.struct.label}
+          {struct.label}
         </label>
         <div className="Select">
           <input
+            {...inputProps}
             type="text"
             autoComplete="off"
             value={this.state.value}

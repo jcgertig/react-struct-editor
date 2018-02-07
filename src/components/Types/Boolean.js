@@ -15,12 +15,18 @@ class BooleanType extends BasicType {
   }
 
   render() {
+    const { struct } = this.props
+    let inputProps = struct.inputProps || {}
+    if (struct.disabled) {
+      inputProps.disabled = true
+    }
     return (
       <div style={{ marginTop: '25px' }}>
         <label style={{ marginBottom: 10 }} className={this.props.displayProps.labelClass}>
           {this.props.struct.label}
         </label>
         <input
+          {...inputProps}
           type="checkbox"
           onChange={this.updateValue}
           className={this.props.displayProps.inputClass}

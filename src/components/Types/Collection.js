@@ -64,7 +64,7 @@ class CollectionType extends BasicType {
   }
 
   renderIndexs() {
-    let { struct: { header, ...props }, displayProps } = this.props
+    let { struct: { header, removeText, ...props }, displayProps } = this.props
     const struct = this.getStruct()
     if (typeof this.state.value === 'undefined') {
       return []
@@ -98,7 +98,7 @@ class CollectionType extends BasicType {
             className={displayProps.buttonClass}
             onClick={() => this.handleRemove(index)}
           >
-            {has(struct, 'removeText') ? struct.removeText : 'Remove Item'}
+            {removeText ? removeText : 'Remove Item'}
           </button>
         </Panel>
       )
@@ -118,13 +118,15 @@ class CollectionType extends BasicType {
         >
           {this.renderIndexs()}
         </Accordion>
-        <button
-          style={{ marginTop: 25 }}
-          className={displayProps.className}
-          onClick={this.handleAdd}
-        >
-          {has(struct, 'addText') ? struct.addText : 'Add Item'}
-        </button>
+        {!struct.disabled && (
+          <button
+            style={{ marginTop: 25 }}
+            className={displayProps.className}
+            onClick={this.handleAdd}
+          >
+            {has(struct, 'addText') ? struct.addText : 'Add Item'}
+          </button>
+        )}
       </div>
     )
   }

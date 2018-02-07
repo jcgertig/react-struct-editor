@@ -98,6 +98,7 @@ class Struct extends Component {
 
 Struct.propTypes = {
   value: PropTypes.any,
+  info: PropTypes.object.isRequired,
   struct: PropTypes.object.isRequired,
   onChange: PropTypes.func.isRequired,
   textTypes: PropTypes.object.isRequired,
@@ -106,6 +107,7 @@ Struct.propTypes = {
   optionTypes: PropTypes.object.isRequired,
   objectTypes: PropTypes.object.isRequired,
   booleanTypes: PropTypes.object.isRequired,
+  onStructChange: PropTypes.func.isRequired,
   keyValueTypes: PropTypes.object.isRequired,
   collectionTypes: PropTypes.object.isRequired
 }

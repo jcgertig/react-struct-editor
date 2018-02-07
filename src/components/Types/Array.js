@@ -62,7 +62,7 @@ class ArrayType extends BasicType {
   }
 
   renderIndexs() {
-    let { struct: { header, ...props }, displayProps } = this.props
+    let { struct: { header, removeText, ...props }, displayProps } = this.props
     const struct = this.getStruct()
 
     return this.state.value.map((val, index) => {
@@ -91,7 +91,7 @@ class ArrayType extends BasicType {
             className={displayProps.buttonClass}
             onClick={() => this.handleRemove(index)}
           >
-            {has(struct, 'removeText') ? struct.removeText : 'Remove Item'}
+            {removeText ? removeText : 'Remove Item'}
           </button>
         </Panel>
       )
@@ -111,13 +111,15 @@ class ArrayType extends BasicType {
         >
           {this.renderIndexs()}
         </Accordion>
-        <button
-          style={{ marginTop: 25 }}
-          onClick={this.handleAdd}
-          className={displayProps.buttonClass}
-        >
-          {has(struct, 'addText') ? struct.addText : 'Add Item'}
-        </button>
+        {!struct.disabled && (
+          <button
+            style={{ marginTop: 25 }}
+            onClick={this.handleAdd}
+            className={displayProps.buttonClass}
+          >
+            {has(struct, 'addText') ? struct.addText : 'Add Item'}
+          </button>
+        )}
       </div>
     )
   }

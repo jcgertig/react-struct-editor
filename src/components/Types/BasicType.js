@@ -33,8 +33,8 @@ class BasicType extends Component {
 
 }
 
-BasicType.checkStruct = function (value, struct) {
-  console.log(value, struct) // eslint-disable-line
+BasicType.checkStruct = function (value, struct) { // eslint-disable-line
+  // console.log(value, struct) // eslint-disable-line
   return true
 }
 
